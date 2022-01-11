@@ -37,16 +37,7 @@ import com.user.model.User;
 import com.user.repository.UserRepository;
 
 
-////@SpringBootTest(properties = "spring.main.lazy-initialization=true",
-//classes = {UsersContoller.class})
-
-//@RunWith();
 @WebMvcTest(UsersContoller.class)
-//@ExtendWith(SpringExtension.class)
-//@ContextConfiguration
-//@SpringBootTest
-//@AutoConfigureMockMvc
-
 class UserControllerTest {
 
 	
@@ -87,67 +78,6 @@ class UserControllerTest {
     }
 	
 	@Test
-    public void updatePatientRecord_success() throws Exception {
-        User updatedRecord = User.builder()
-        		 .id(3l)
-                 .firstName("Vedesh")
-                 .lastName("Salgaonkar")
-                 .email("sdaf@gmail.com")
-                 .gender("Male")
-                 .age(18)
-                 .address("Malvan")
-                 .pincode("416602")
-                 .doj(new Date(2004-12-12))
-                 .dob(new Date(2022-12-12))
-                 .password("Vedesh1123")
-                 .status(0)
-                 .build();
-        Mockito.when(userRepository.findById(RECORD_3.getId()))
-        .thenReturn(Optional.of(RECORD_3));
-        
-        Mockito.when(userRepository.save(updatedRecord)).thenReturn(updatedRecord);
-
-        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/update/3")
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(updatedRecord));
-
-        mockMvc.perform(mockRequest)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.firstName", is("Vedesh")));
-    }
-//	@Test
-//	public void createUser_success() throws Exception{
-//		User newUser = User.builder()
-//				.id(10l)
-//                .firstName("Madhav")
-//                .lastName("Joshi")
-//                .email("mathdav@gmail.com")
-//                .gender("Male")
-//                .age(18)
-//                .address("Malvan")
-//                .pincode("416602")
-//                .doj(new Date(2004-12-12))
-//                .dob(new Date(2022-12-12))
-//                .password("Madhav1123")
-//                .status(0)
-//				.build();
-//		
-//		Mockito.when(userRepository.save(newUser)).thenReturn(newUser);
-//		
-//		MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.post("/add")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.accept(MediaType.APPLICATION_JSON)
-//				.content(this.mapper.writeValueAsString(newUser));
-//		
-//		mockMvc.perform(mockRequest)
-//		.andDo(print())
-//			.andExpect(status().isOk())
-//			.andExpect(jsonPath("$", notNullValue()))
-//			.andExpect(jsonPath("$.firstName", is("Madhav")));
-//	}
-	@Test
 	public void createUser_success() throws Exception{
 		User newUser = User.builder()
 				.id(10l)
@@ -178,6 +108,40 @@ class UserControllerTest {
 			.andExpect(jsonPath("$.firstName", is("Madhav")));
 	}
 	
+	
+	@Test
+    public void updatePatientRecord_success() throws Exception {
+        User updatedRecord = User.builder()
+        		 .id(3l)
+                 .firstName("Vedesh")
+                 .lastName("Salgaonkar")
+                 .email("sdaf@gmail.com")
+                 .gender("Male")
+                 .age(18)
+                 .address("Malvan")
+                 .pincode("416602")
+                 .doj(new Date(2004-12-12))
+                 .dob(new Date(2022-12-12))
+                 .password("Vedesh1123")
+                 .status(0)
+                 .build();
+        Mockito.when(userRepository.findById(RECORD_3.getId()))
+        .thenReturn(Optional.of(RECORD_3));
+        
+        Mockito.when(userRepository.save(updatedRecord)).thenReturn(updatedRecord);
+
+        MockHttpServletRequestBuilder mockRequest = MockMvcRequestBuilders.put("/update/3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(this.mapper.writeValueAsString(updatedRecord));
+
+        mockMvc.perform(mockRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.firstName", is("Vedesh")));
+    }
+
+	
 	@Test
     public void deletePatientById_success() throws Exception {
         
@@ -193,12 +157,12 @@ class UserControllerTest {
 	
 	
 	@Test
-    public void fetUserByOr() throws Exception {
+    public void fetchUserByOr() throws Exception {
         List<User> records = new ArrayList<>
         		(Arrays.asList(RECORD_1, RECORD_2, RECORD_3));
         
         Mockito.when(userRepository.findByFirstNameOrLastNameOrPincode(RECORD_1.getFirstName(),RECORD_1.getFirstName(),RECORD_1.getPincode())).thenReturn(records);
-        //When findAll called then ready with records  (No DB calls) 
+        
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/user/Ram/Gaonkar/416602")
                 .contentType(MediaType.APPLICATION_JSON))

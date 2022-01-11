@@ -24,11 +24,6 @@ public class UsersContoller {
 	
 
 	
-//	@GetMapping("/userss")
-//	public List<User> getAllUserss(){
-//		return userRepository.findAll();	
-//	}
-	
 	@GetMapping("/users")
 	public List<User> getAllUsers(){
 		return userRepository.findByStatus();
@@ -47,8 +42,8 @@ public class UsersContoller {
 //			userRepository.save(user);
 //	}
 	
-	@PutMapping("/update/{idB}")
-    public User updatePatientRecord(@RequestBody User patientRecord){
+	@PutMapping("/update/{id}")
+    public User updatePatientRecord(@RequestBody User patientRecord, @PathVariable long id){
         
         Optional<User> optionalRecord = userRepository
         		.findById(patientRecord.getId());
