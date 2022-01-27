@@ -14,7 +14,16 @@ import com.user.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 
-	List<User> findByFirstNameOrLastNameOrPincode(String firstName, String lastName, String pincode);
+//	List<User> findByFirstNameOrLastNameOrPincode(String firstName, String lastName, String pincode);
+	
+	List<User> findByFirstName(String firstName);
+	
+	List<User> findByLastName(String lastName);
+
+	List<User> findByPincode(String pincode);
+	
+	
+	
 	
 //	List<User> findByStatus(int status);
 	

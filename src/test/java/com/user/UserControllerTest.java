@@ -78,6 +78,48 @@ class UserControllerTest {
     }
 	
 	@Test
+    public void getRecordByFirstname() throws Exception {
+        List<User> records = new ArrayList<>
+        		(Arrays.asList(RECORD_1, RECORD_2, RECORD_3));
+        
+        Mockito.when(userRepository.findByFirstName(RECORD_1.getFirstName())).thenReturn(records);
+        //When findAll called then ready with records  (No DB calls) 
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/fname/Ram")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()) //200
+                .andExpect(jsonPath("$[0].firstName", is("Ram")));
+    }
+	@Test
+    public void getRecordByLastname() throws Exception {
+        List<User> records = new ArrayList<>
+        		(Arrays.asList(RECORD_1, RECORD_2, RECORD_3));
+        
+        Mockito.when(userRepository.findByLastName(RECORD_1.getLastName())).thenReturn(records);
+        //When findAll called then ready with records  (No DB calls) 
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/lname/Gaonkar")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()) //200
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].lastName", is("Gaonkar")));
+    }
+	@Test
+    public void getRecordByPincode() throws Exception {
+        List<User> records = new ArrayList<>
+        		(Arrays.asList(RECORD_1, RECORD_2, RECORD_3));
+        
+        Mockito.when(userRepository.findByPincode(RECORD_1.getPincode())).thenReturn(records);
+        //When findAll called then ready with records  (No DB calls) 
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/pincode/416602")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()) //200
+                .andExpect(jsonPath("$", hasSize(3)))
+                .andExpect(jsonPath("$[0].firstName", is("Ram")));
+    }
+	
+	@Test
 	public void createUser_success() throws Exception{
 		User newUser = User.builder()
 				.id(10l)
@@ -156,19 +198,19 @@ class UserControllerTest {
 	
 	
 	
-	@Test
-    public void fetchUserByOr() throws Exception {
-        List<User> records = new ArrayList<>
-        		(Arrays.asList(RECORD_1, RECORD_2, RECORD_3));
-        
-        Mockito.when(userRepository.findByFirstNameOrLastNameOrPincode(RECORD_1.getFirstName(),RECORD_1.getFirstName(),RECORD_1.getPincode())).thenReturn(records);
-        
-        mockMvc.perform(MockMvcRequestBuilders
-                .get("/user/Ram/Gaonkar/416602")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk()); //200
-             
-    }
+//	@Test
+//    public void fetchUserByOr() throws Exception {
+//        List<User> records = new ArrayList<>
+//        		(Arrays.asList(RECORD_1, RECORD_2, RECORD_3));
+//        
+//        Mockito.when(userRepository.findByFirstNameOrLastNameOrPincode(RECORD_1.getFirstName(),RECORD_1.getFirstName(),RECORD_1.getPincode())).thenReturn(records);
+//        
+//        mockMvc.perform(MockMvcRequestBuilders
+//                .get("/user/Ram/Gaonkar/416602")
+//                .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk()); //200
+//             
+//    }
 	
 	@Test
     public void getUserSortedByDoj() throws Exception {

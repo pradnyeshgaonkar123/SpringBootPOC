@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.user.model.User;
 import com.user.repository.UserRepository;
 
+
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 public class UsersContoller {
 	
@@ -41,6 +46,13 @@ public class UsersContoller {
 //		if(userRepository.findById(id).isPresent())
 //			userRepository.save(user);
 //	}
+	
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<User> getEmployeeById(@PathVariable Long id) {
+		User employee = userRepository.findById(id).get();
+		return ResponseEntity.ok(employee);
+	}
 	
 	@PutMapping("/update/{id}")
     public User updatePatientRecord(@RequestBody User patientRecord, @PathVariable long id){
@@ -83,12 +95,25 @@ public class UsersContoller {
 		userRepository.softDeleteUSer(id);
 	}
 	
+	@GetMapping("/fname/{firstName}")
+	public List<User> getUsersByFirstname(@PathVariable("firstName") String firstName){
+		return userRepository.findByFirstName(firstName);
+	}
+	@GetMapping("/lname/{lname}")
+	public List<User> getUsersBySurname(@PathVariable("lname") String lname){
+		return userRepository.findByLastName(lname);
+	}
+	
+	@GetMapping("/pincode/{pin}")
+	public List<User> getUsersByPincode(@PathVariable String pin){
+		return userRepository.findByPincode(pin);
+	}
 	
 
-	@GetMapping("/user/{firstName}/{lastName}/{pincode}")
-	public List<User> getUserByOr(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String pincode){
-		return userRepository.findByFirstNameOrLastNameOrPincode(firstName, lastName, pincode);
-	}
+//	@GetMapping("/user/{firstName}/{lastName}/{pincode}")
+//	public List<User> getUserByOr(@PathVariable String firstName, @PathVariable String lastName, @PathVariable String pincode){
+//		return userRepository.findByFirstNameOrLastNameOrPincode(firstName, lastName, pincode);
+//	}
 	
 	@GetMapping("/sort/doj")
 	public List<User> getUserSortedByDoj(){
